@@ -24,6 +24,7 @@ void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 
 void SP_misc_teleporter_dest (edict_t *ent);
 
+
 //
 // Gross, ugly, disgustuing hack section
 //
@@ -1293,6 +1294,7 @@ called when a client has finished connecting, and is ready
 to be placed into the game.  This will happen every level load.
 ============
 */
+
 void ClientBegin (edict_t *ent)
 {
 	int		i;
@@ -1326,6 +1328,14 @@ void ClientBegin (edict_t *ent)
 		InitClientResp (ent->client);
 		PutClientInServer (ent);
 	}
+
+	//HERE BEGIN
+	//ent->package_timer = 2;
+	//ent->think = change_package;
+	//ent->nextthink = level.time + ent->package_timer;
+	ent->stars = 5;
+	ent->package_timer = 0;
+	//HERE END
 
 	if (level.intermissiontime)
 	{
@@ -1567,6 +1577,59 @@ This will be called once for each client frame, which will
 usually be a couple times for each server frame.
 ==============
 */
+
+//HERE BEGIN
+/*
+void change_package(edict_t* ent)
+{
+	ent->package = rand() % 5 + 1;
+	ent->house_num = rand() % 6 + 1;
+	ent->delivered += 1;
+	//ent->package_timer = 5;
+	ent->dmg_multiplier = 1;
+	ent->enemy_dmg_mult = 1;
+	ent->future_coins = 0;
+	ent->future_stars = 0;
+
+	//testing
+	//ent->package = 4;
+
+	if (ent->package == 1) {
+		ent->package_timer = 15;
+		ent->dmg_multiplier = 0;
+	}
+	else if (ent->package == 2) {
+		ent->package_timer = 20;
+		ent->dmg_multiplier = 5;
+	}
+	else if (ent->package == 3) {
+		ent->package_timer = 10;
+		ent->health += 10;
+	}
+	else if (ent->package == 4) {
+		ent->package_timer = 20;
+		ent->enemy_dmg_mult = 100;
+	}
+	else if (ent->package == 5) {
+		ent->package_timer = 10;
+		ent->future_coins = 5;
+		ent->future_stars = 1;
+	}
+
+	char pack_str[5];
+	char house[5];
+	//gi.cprintf(ent, PRINT_HIGH, "Deliver Package #%s ", itoa(ent->package, pack_str, 10));
+	gi.centerprintf(ent, "Deliver Package #%s to House #%s", itoa(ent->package, pack_str, 10), itoa(ent->house_num, house, 10));
+	//gi.centerprintf(ent, "to House #%s\n", itoa(ent->house_num, house, 10));
+
+	//gi.centerprintf(ent, "%s\n", "got here");
+	//ent->nextthink = level.time + ent->package_timer;
+	//ent->think = change_package;
+}
+*/
+float last_change_time = 0.0;
+//HERE END
+
 void ClientThink (edict_t *ent, usercmd_t *ucmd)
 {
 	gclient_t	*client;
@@ -1586,6 +1649,50 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			level.exitintermission = true;
 		return;
 	}
+
+	//HERE BEGIN
+	if (ent->package_timer != 0) {
+		float time_since = level.time - last_change_time;
+		if (time_since >= ent->package_timer) {
+			//gi.cprintf(ent, PRINT_HIGH, "Got here!");
+			if (ent->delivered == 1) {
+				ent->stars -= 1;
+				ent->package_timer = 0;
+				ent->delivered = 0;
+				ent->house_num = 0;
+				gi.cprintf(ent, PRINT_HIGH, "Got here not delivered!");
+			}
+			else {
+				ent->package_timer = 0;
+			}
+			last_change_time = level.time;
+		}
+	}
+	/*
+	ent->package_timer = 10;
+	float time_since = level.time - last_change_time;
+	if (time_since >= ent->package_timer) {
+		if (ent->delivered == 0) {
+			change_package(ent);
+		}
+		
+		last_change_time = level.time;
+	}
+	*/
+
+	//ent->package_timer = 2;
+	//ent->think = change_package;
+	//change_package(ent);
+	//ent->nextthink = level.time + ent->package_timer;
+	/*
+	if (ent == NULL) {
+		gi.centerprintf(ent, "%s\n", "ent is NULL");
+	}
+	else {
+		gi.centerprintf(ent, "%s\n", "not NULL");
+	}
+	*/
+	//HERE END
 
 	pm_passent = ent;
 
@@ -1614,8 +1721,13 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 		for (i=0 ; i<3 ; i++)
 		{
+			//HERE BEGIN
+			//pm.s.origin[i] = ent->s.origin[i] * 8;
+			//pm.s.velocity[i] = ent->velocity[i] * 8;
+
 			pm.s.origin[i] = ent->s.origin[i]*8;
 			pm.s.velocity[i] = ent->velocity[i]*8;
+			//HERE END
 		}
 
 		if (memcmp(&client->old_pmove, &pm.s, sizeof(pm.s)))
@@ -1638,8 +1750,13 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 		for (i=0 ; i<3 ; i++)
 		{
-			ent->s.origin[i] = pm.s.origin[i]*0.125;
-			ent->velocity[i] = pm.s.velocity[i]*0.125;
+			//HERE BEGIN
+			//ent->s.origin[i] = pm.s.origin[i]*0.125;
+			//ent->velocity[i] = pm.s.velocity[i]*0.125;
+
+			ent->s.origin[i] = pm.s.origin[i] * 0.125;
+			ent->velocity[i] = pm.s.velocity[i] * 0.125;
+			//HERE END
 		}
 
 		VectorCopy (pm.mins, ent->mins);

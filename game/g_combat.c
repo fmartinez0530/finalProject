@@ -374,6 +374,84 @@ qboolean CheckTeamDamage (edict_t *targ, edict_t *attacker)
 	return false;
 }
 
+//HERE BEGIN
+/*
+void blank_think(edict_t* self) {
+	self->nextthink = level.time + FRAMETIME;
+	self->s.frame++;
+	if (self->s.frame == 5)
+		self->think = G_FreeEdict;
+}
+*/
+qboolean checkSgrenade = false;
+qboolean checkGrenade = false;
+
+void poison_enemy(edict_t* enemy, edict_t* attacker, int duration, int dmg) {
+	enemy->poison_time = level.time + duration;
+	enemy->poison_damage = dmg / duration;
+	enemy->poison_attacker = attacker;
+}
+
+void poison_think(edict_t* enemy) {
+	if (level.time > enemy->poison_time) {
+		enemy->poison_time = 0;
+		enemy->poison_damage = 0;
+		enemy->poison_attacker = NULL;
+		enemy->think = monster_think;
+		enemy->nextthink = level.time + FRAMETIME;
+		return;
+	}
+	checkGrenade = true;
+	T_Damage(enemy, enemy->poison_attacker, enemy->poison_attacker, vec3_origin, enemy->s.origin, vec3_origin, enemy->poison_damage, 0, 0, MOD_POISON);
+	enemy->nextthink = level.time + 1;
+}
+
+void push_think(edict_t* enemy) {
+	vec3_t dir, push;
+	float dist;
+	if (level.time >= enemy->push_time) {
+		enemy->push_time = 0;
+		enemy->push_attacker = NULL;
+		enemy->push_inflictor = NULL;
+		enemy->think = monster_think;
+		enemy->nextthink = level.time + FRAMETIME;
+		return;
+	}
+	VectorSubtract(enemy->s.origin, enemy->push_attacker->s.origin, dir);
+	dist = VectorNormalize(dir);
+	float force = 2000.0f;
+	VectorScale(dir, force, push);
+	//vec3_t mogus = { 1, 1, 1 };
+	checkSgrenade = true;
+	T_Damage(enemy, enemy->push_attacker, enemy->push_attacker, vec3_origin, enemy->s.origin, vec3_origin, 10, 50, 0, MOD_PUSH);
+	VectorMA(enemy->velocity, 1.0f, push, enemy->velocity);
+	gi.linkentity(enemy);
+	enemy->nextthink = level.time + 1;
+	/*
+	T_Damage(enemy, enemy->poison_attacker, enemy->poison_attacker, vec3_origin, enemy->s.origin, vec3_origin, 1, 10, 0, MOD_PUSH);
+	gi.linkentity(enemy);
+	enemy->think = monster_think;
+	enemy->nextthink = level.time + FRAMETIME;
+	*/
+}
+
+void my_think(edict_t* self) {
+	self->nextthink = level.time + FRAMETIME;
+}
+
+void rand_think(edict_t* self) {
+	if (level.time > self->stun_time) {
+		self->stun_time = 0;
+		self->think = monster_think;
+		self->nextthink = level.time + FRAMETIME;
+	}
+	ai_rand_move(self, 50);
+	gi.linkentity(self);
+	self->nextthink = level.time + 1;
+}
+//HERE END
+
+
 void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod)
 {
 	gclient_t	*client;
@@ -385,7 +463,6 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 
 	if (!targ->takedamage)
 		return;
-
 	// friendly fire avoidance
 	// if enabled you can't hurt teammates (but you can hurt yourself)
 	// knockback still occurs
@@ -484,16 +561,114 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		return;
 
 // do the damage
+	//gi.cprintf(inflictor->owner, PRINT_HIGH, "got here before T_Damage\n");
+	//gi.cprintf(inflictor->owner, PRINT_HIGH, itoa(take, num, 10));
+
 	if (take)
 	{
+		//gi.cprintf(inflictor->owner, PRINT_HIGH, "got here in T_Damage -> take\n");
 		if ((targ->svflags & SVF_MONSTER) || (client))
 			SpawnDamage (TE_BLOOD, point, normal, take);
 		else
 			SpawnDamage (te_sparks, point, normal, take);
 
-
-		targ->health = targ->health - take;
+		//HERE BEGIN
+		take = 0;
+		if (mod == MOD_POISON) {
+			take = targ->poison_damage;
+		}
+		else if (mod == MOD_PUSH) {
+			take = 0;
+		}
+		else if (mod == MOD_BLASTER) {
+			take = 1;
+		}
+		else if (mod == MOD_SHOTGUN) {
+			take = 1;
+		}
+		else if (mod == MOD_HYPERBLASTER) {
+			take = 1;
+		}
+		else if (mod == MOD_MACHINEGUN) {
+			take = 1;
+		}
+		else if (mod == MOD_CHAINGUN) {
+			take = 1;
+		}
+		else if (mod == MOD_SSHOTGUN) {
+			take = 1;
+		}
+		else if (mod == MOD_RAILGUN) {
+			take = 100;
+		}
+		else if (mod == MOD_HANDSGRENADE || mod == MOD_SHG_SPLASH || mod == MOD_SG_SPLASH || mod == MOD_SGRENADE || mod == MOD_HELD_SGRENADE) {
+			targ->push_attacker = attacker;
+			targ->push_inflictor = inflictor;
+			targ->push_time = level.time + 1;
+			targ->think = push_think;
+		}
+		else if (mod == MOD_HANDCGRENADE || mod == MOD_CHG_SPLASH ||mod == MOD_CG_SPLASH || mod == MOD_CGRENADE || mod == MOD_HELD_CGRENADE) {
+			take = 0;
+			targ->stun_time = level.time + 5;
+			targ->think = rand_think;
+			//targ->nextthink = level.time + 1;
+			//float angle = targ->s.angles[YAW] + (random() - 0.5) * 180;
+			//targ->s.angles[YAW] = angle;
 			
+			/*
+			if (!targ->think) {
+				targ->think = my_think;
+			}
+			targ->nextthink = level.time + 5;
+			*/
+			//gi.linkentity(targ);
+			
+		}
+		else if (mod == MOD_BFG_BLAST || mod == MOD_BFG_EFFECT || mod == MOD_BFG_LASER) {
+
+			take = 0;
+			if (!targ->think) {
+				targ->think = my_think;
+			}
+			targ->nextthink = level.time + 999999;
+			gi.linkentity(targ);
+
+
+			//poison_enemy(targ, attacker, 2, 10);
+			//targ->think = poison_think;
+
+			//poison_enemy(targ, attacker, 3, 10);
+			//if (!targ->think)
+			//	targ->think = my_think;
+			//targ->think = poison_think;
+			//targ->pain(targ, NULL, 0, targ->poison_damage);
+		}
+		else if (mod == MOD_HANDGRENADE || mod == MOD_HG_SPLASH || mod == MOD_G_SPLASH || mod == MOD_GRENADE || mod == MOD_HELD_GRENADE || strcmp(inflictor->classname, "hgrenade")) {
+			/*
+			take = 100;
+			if (!targ->think) {
+				targ->think = my_think;
+			}
+			targ->nextthink = level.time + 5;
+			gi.linkentity(targ);
+			*/
+			poison_enemy(targ, attacker, 2, 10);
+			targ->think = poison_think;
+		}
+		else {
+			take = 100;
+		}
+		//if (attacker->package)
+		//targ->dmg_multiplier = 1;
+		if (attacker->client)
+			targ->health = targ->health - (take + attacker->enemy_dmg_mult);
+		else
+			targ->health = targ->health - (take * targ->dmg_multiplier);
+
+			// attacker is an enemy
+		//targ->health = targ->health - (take * targ->dmg_multiplier);
+		//HERE END
+		
 		if (targ->health <= 0)
 		{
 			if ((targ->svflags & SVF_MONSTER) || (client))
@@ -544,6 +719,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 T_RadiusDamage
 ============
 */
+
 void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int mod)
 {
 	float	points;
@@ -557,20 +733,66 @@ void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_
 			continue;
 		if (!ent->takedamage)
 			continue;
+		//strcmp(inflictor->classname, "hgrenades")
+		//mod == MOD_HANDGRENADE || mod == MOD_HG_SPLASH || mod == MOD_G_SPLASH || mod == MOD_GRENADE || mod == MOD_HELD_GRENADE
+		if (strcmp(inflictor->classname, "hgrenade")) {
+			points = 0;
+		}
+		else if (mod == MOD_HANDCGRENADE || mod == MOD_CHG_SPLASH || mod == MOD_CG_SPLASH || mod == MOD_CGRENADE || mod == MOD_HELD_CGRENADE) {
+			inflictor->classname = "cgrenade";
+			points = 0;
+		}
+		else if (mod == MOD_HANDSGRENADE || mod == MOD_SHG_SPLASH || mod == MOD_SG_SPLASH || mod == MOD_SGRENADE || mod == MOD_HELD_SGRENADE) {
+			inflictor->classname = "sgrenade";
+			points = 0;
+		}
+		else if (mod == MOD_BFG_BLAST) {
+			points = 0;
+			//ent->think = my_think;
+			//ent->think = blank_think;
+			//ent->nextthink = level.time + 4;
+		}
+		else if (mod == MOD_BFG_EFFECT) {
+			points = 0;
+			//ent->think = my_think;
+		}
+		else {
+			points = 100;
+		}
 
-		VectorAdd (ent->mins, ent->maxs, v);
-		VectorMA (ent->s.origin, 0.5, v, v);
-		VectorSubtract (inflictor->s.origin, v, v);
-		points = damage - 0.5 * VectorLength (v);
+		//ent->nextthink = level.time + 5;
+
+		//VectorAdd(ent->mins, ent->maxs, v);
+		//VectorMA(ent->s.origin, 0.5, v, v);
+		//VectorSubtract(inflictor->s.origin, v, v);
+		//points = damage - 0.5 * VectorLength(v);
 		if (ent == attacker)
 			points = points * 0.5;
 		if (points > 0)
 		{
-			if (CanDamage (ent, inflictor))
+			if (CanDamage(ent, inflictor))
 			{
-				VectorSubtract (ent->s.origin, inflictor->s.origin, dir);
-				T_Damage (ent, inflictor, attacker, dir, inflictor->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod);
+				VectorSubtract(ent->s.origin, inflictor->s.origin, dir);
+				//HERE BEGIN
+				//Changed damaged value to 0, was "(int)points"
+				//EDIT, changed damage value back to "(int)points"
+				T_Damage(ent, inflictor, attacker, dir, inflictor->s.origin, vec3_origin, 100, (int)points, DAMAGE_RADIUS, mod);
+				//HERE BEGIN
 			}
 		}
+		//HERE BEGIN
+		if (points == 0) {
+			if (CanDamage(ent, inflictor))
+			{
+				VectorSubtract(ent->s.origin, inflictor->s.origin, dir);
+				T_Damage(ent, inflictor, attacker, dir, inflictor->s.origin, vec3_origin, 100, (int)points, DAMAGE_RADIUS, mod);
+				//HERE BEGIN
+				//Changed damaged value to 0, was "(int)points"
+				//EDIT, changed damage value back to "(int)points"
+				//gi.cprintf(ent->owner, PRINT_HIGH, "GOT HERE\n");
+				//HERE BEGIN
+			}
+		}
+		//HERE END
 	}
 }

@@ -279,19 +279,95 @@ void Cmd_Give_f (edict_t *ent)
 
 	if (it->flags & IT_AMMO)
 	{
-		if (gi.argc() == 3)
+		if (gi.argc() == 3) {
 			ent->client->pers.inventory[index] = atoi(gi.argv(2));
-		else
-			ent->client->pers.inventory[index] += it->quantity;
+		}
+		else {
+			//HERE BEGIN
+			if (it->flags & WEAP_GRENADES && ent->coins >= 1) {
+				if (ent->coins >= 1) {
+					gi.cprintf(ent, PRINT_HIGH, "+5 Poison Grenades\n");
+					ent->coins -= 1;
+					ent->client->pers.inventory[index] += it->quantity;
+				}
+				else {
+					gi.cprintf(ent, PRINT_HIGH, "Need more coins!\n");
+				}
+			}
+			else if (it->flags & WEAP_SGRENADES && ent->coins >= 1) {
+				if (ent->coins >= 1) {
+					gi.cprintf(ent, PRINT_HIGH, "+5 Shockwave Grenades\n");
+					ent->coins -= 1;
+					ent->client->pers.inventory[index] += it->quantity;
+				}
+				else {
+					gi.cprintf(ent, PRINT_HIGH, "Need more coins!\n");
+				}
+			}
+			else if (it->flags & WEAP_CGRENADES && ent->coins >= 1) {
+				if (ent->coins >= 1) {
+					gi.cprintf(ent, PRINT_HIGH, "+5 Chaos Grenades\n");
+					ent->coins -= 1;
+					ent->client->pers.inventory[index] += it->quantity;
+				}
+				else {
+					gi.cprintf(ent, PRINT_HIGH, "Need more coins!\n");
+				}
+			}
+			else {
+				ent->client->pers.inventory[index] += it->quantity;
+			}
+			//HERE END
+		}
 	}
 	else
 	{
-		it_ent = G_Spawn();
-		it_ent->classname = it->classname;
-		SpawnItem (it_ent, it);
-		Touch_Item (it_ent, ent, NULL, NULL);
-		if (it_ent->inuse)
-			G_FreeEdict(it_ent);
+		//HERE BEGIN
+		//Added the if-statement. The else statement was already here, just added the lines inside of it to the if-else statement thing
+		if (it->flags & WEAP_RAILGUN)
+		{
+			if (ent->coins >= 1) {
+				gi.cprintf(ent, PRINT_HIGH, "Railgun Bought!\n");
+				ent->coins -= 1;
+				//Added the below to make gun spawn if enough coins
+				it_ent = G_Spawn();
+				it_ent->classname = it->classname;
+				SpawnItem(it_ent, it);
+				Touch_Item(it_ent, ent, NULL, NULL);
+				if (it_ent->inuse)
+					G_FreeEdict(it_ent);
+			}
+			else {
+				gi.cprintf(ent, PRINT_HIGH, "Need more coins!\n");
+			}
+			// output the console message
+		}
+		else if (it->flags & WEAP_BFG) {
+			if (ent->coins >= 1) {
+				gi.cprintf(ent, PRINT_HIGH, "BFG Bought!\n");
+				ent->coins -= 1;
+				//Added the below to make gun spawn if enough coins
+				it_ent = G_Spawn();
+				it_ent->classname = it->classname;
+				SpawnItem(it_ent, it);
+				Touch_Item(it_ent, ent, NULL, NULL);
+				if (it_ent->inuse)
+					G_FreeEdict(it_ent);
+			}
+			else {
+				gi.cprintf(ent, PRINT_HIGH, "Need more coins!\n");
+			}
+		}
+		else {
+			//gi.cprintf(ent, PRINT_HIGH, "railgun added\n");
+			it_ent = G_Spawn();
+			it_ent->classname = it->classname;
+			SpawnItem(it_ent, it);
+			Touch_Item(it_ent, ent, NULL, NULL);
+			if (it_ent->inuse)
+				G_FreeEdict(it_ent);
+		}
+		//HERE END
 	}
 }
 

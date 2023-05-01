@@ -102,6 +102,10 @@ typedef enum
 	AMMO_SHELLS,
 	AMMO_ROCKETS,
 	AMMO_GRENADES,
+	//HERE BEGIN
+	AMMO_CGRENADES,
+	AMMO_SGRENADES,
+	//HERE END
 	AMMO_CELLS,
 	AMMO_SLUGS
 } ammo_t;
@@ -230,6 +234,10 @@ typedef struct
 #define WEAP_HYPERBLASTER		9 
 #define WEAP_RAILGUN			10
 #define WEAP_BFG				11
+//HERE BEGIN
+#define WEAP_SGRENADES			12
+#define WEAP_CGRENADES			13
+//HERE END
 
 typedef struct gitem_s
 {
@@ -498,6 +506,23 @@ extern	int	body_armor_index;
 #define MOD_TRIGGER_HURT	31
 #define MOD_HIT				32
 #define MOD_TARGET_BLASTER	33
+//HERE BEGIN
+#define MOD_POISON			34
+#define MOD_CGRENADE		35
+#define MOD_HANDCGRENADE	36
+#define MOD_HELD_CGRENADE	37
+#define MOD_CHG_SPLASH		38
+#define MOD_CG_SPLASH		39
+
+#define MOD_SGRENADE		40
+#define MOD_HANDSGRENADE	41
+#define MOD_HELD_SGRENADE	42
+#define MOD_SHG_SPLASH		43
+#define MOD_SG_SPLASH		44
+
+#define MOD_PUSH			45
+
+//HERE END
 #define MOD_FRIENDLY_FIRE	0x8000000
 
 extern	int	meansOfDeath;
@@ -653,6 +678,10 @@ void vectoangles (vec3_t vec, vec3_t angles);
 //
 qboolean OnSameTeam (edict_t *ent1, edict_t *ent2);
 qboolean CanDamage (edict_t *targ, edict_t *inflictor);
+//HERE BEGIN
+void my_think(edict_t* ent);
+void rand_think(edict_t* ent);
+//HERE END
 void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod);
 void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int mod);
 
@@ -709,6 +738,9 @@ void AI_SetSightClient (void);
 
 void ai_stand (edict_t *self, float dist);
 void ai_move (edict_t *self, float dist);
+//HERE BEGIN
+void ai_rand_move(edict_t* self, float dist);
+//HERE END
 void ai_walk (edict_t *self, float dist);
 void ai_turn (edict_t *self, float dist);
 void ai_run (edict_t *self, float dist);
@@ -730,6 +762,13 @@ void fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int k
 void fire_blaster (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, int effect, qboolean hyper);
 void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius);
 void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius, qboolean held);
+//HERE BEGIN
+void fire_cgrenade2(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius, qboolean held);
+void fire_cgrenade(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius);
+
+void fire_sgrenade2(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius, qboolean held);
+void fire_sgrenade(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius);
+//HERE END
 void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage);
 void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick);
 void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
@@ -849,6 +888,10 @@ typedef struct
 	int			max_shells;
 	int			max_rockets;
 	int			max_grenades;
+	//HERE BEGIN
+	int			max_cgrenades;
+	int			max_sgrenades;
+	//HERE END
 	int			max_cells;
 	int			max_slugs;
 
@@ -1052,6 +1095,29 @@ struct edict_s
 	float		last_move_time;
 
 	int			health;
+	//HERE BEGIN
+	int			coins;
+	int			stars;
+	int			future_coins;
+	int			future_stars;
+	int			frozen;
+	int			push_time;
+	int			poison_time;
+	int			poison_damage;
+	int			stun_time;
+	int			timest;
+	int			timer;
+	int			package;
+	int			package_timer;
+	int			delivered;
+	int			house_num;
+	int			dmg_multiplier;
+	int			enemy_dmg_mult;
+	edict_t		*poison_attacker;
+	edict_t		*push_attacker;
+	edict_t		*push_inflictor;
+	//HERE END
+
 	int			max_health;
 	int			gib_health;
 	int			deadflag;

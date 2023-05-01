@@ -88,6 +88,10 @@ void SP_target_string (edict_t *ent);
 void SP_worldspawn (edict_t *ent);
 void SP_viewthing (edict_t *ent);
 
+//HERE BEGIN
+void change_package(edict_t* ent);
+//HERE END
+
 void SP_light (edict_t *self);
 void SP_light_mine1 (edict_t *ent);
 void SP_light_mine2 (edict_t *ent);
@@ -793,8 +797,39 @@ Only used for the world.
 "gravity"	800 is default gravity
 "message"	text to print at user logon
 */
+
+//HERE BEGIN
+/*
+void change_package(edict_t* ent)
+{
+	// Set ent->package to a new random value between 1 and 5
+	ent->package = rand() % 5 + 1;
+	ent->package_timer = 10;
+
+	gi.cvar_set("maxvelocity", "1000");
+
+	char pack_str[5];
+	gi.cprintf(ent->client, PRINT_HIGH, "%s\n", itoa(ent->package, pack_str, 10));
+
+	// Set the next time to call this function in 10 seconds
+	ent->nextthink = level.time + ent->package_timer;
+}
+*/
+//HERE END
+
 void SP_worldspawn (edict_t *ent)
 {
+	//HERE BEGIN
+	/*
+	ent->package = rand() % 5 + 1;
+	char pack_str[5];
+	gi.dprintf("%d\n", itoa(ent->package, pack_str, 10));
+	ent->package_timer = 2;
+	ent->think = change_package;
+	ent->nextthink = level.time + ent->package_timer;
+	*/
+	//HERE END
+
 	ent->movetype = MOVETYPE_PUSH;
 	ent->solid = SOLID_BSP;
 	ent->inuse = true;			// since the world doesn't use G_Spawn()

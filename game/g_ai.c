@@ -94,6 +94,15 @@ void ai_move (edict_t *self, float dist)
 	M_walkmove (self, self->s.angles[YAW], dist);
 }
 
+//HERE BEGIN
+void ai_rand_move(edict_t* self, float dist)
+{
+	float angle = self->s.angles[YAW] + (random() - 0.5) * 180;
+	self->s.angles[YAW] = angle;
+	M_walkmove(self, self->s.angles[YAW], dist);
+}
+//HERE END
+
 
 /*
 =============

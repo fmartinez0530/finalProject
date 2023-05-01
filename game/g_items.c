@@ -36,6 +36,14 @@ void Weapon_GrenadeLauncher (edict_t *ent);
 void Weapon_Railgun (edict_t *ent);
 void Weapon_BFG (edict_t *ent);
 
+//HERE BEGIN
+void Weapon_FreezeGrenade(edict_t *ent);
+void Weapon_PoisonGrenade(edict_t *ent);
+void Weapon_ConcussionGrenade(edict_t *ent);
+void Weapon_ShockwaveGrenade(edict_t *ent);
+void Weapon_ClusterGrenade(edict_t *ent); //Maybe? Probably not gonna do this one
+//HERE END
+
 gitem_armor_t jacketarmor_info	= { 25,  50, .30, .00, ARMOR_JACKET};
 gitem_armor_t combatarmor_info	= { 50, 100, .60, .30, ARMOR_COMBAT};
 gitem_armor_t bodyarmor_info	= {100, 200, .80, .60, ARMOR_BODY};
@@ -269,6 +277,8 @@ qboolean Pickup_Pack (edict_t *ent, edict_t *other)
 		other->client->pers.max_rockets = 100;
 	if (other->client->pers.max_grenades < 100)
 		other->client->pers.max_grenades = 100;
+	if (other->client->pers.max_cgrenades < 100)
+		other->client->pers.max_cgrenades = 100;
 	if (other->client->pers.max_cells < 300)
 		other->client->pers.max_cells = 300;
 	if (other->client->pers.max_slugs < 100)
@@ -309,6 +319,17 @@ qboolean Pickup_Pack (edict_t *ent, edict_t *other)
 		if (other->client->pers.inventory[index] > other->client->pers.max_grenades)
 			other->client->pers.inventory[index] = other->client->pers.max_grenades;
 	}
+
+	//HERE BEGIN
+	item = FindItem("Cgrenades");
+	if (item)
+	{
+		index = ITEM_INDEX(item);
+		other->client->pers.inventory[index] += item->quantity;
+		if (other->client->pers.inventory[index] > other->client->pers.max_cgrenades)
+			other->client->pers.inventory[index] = other->client->pers.max_cgrenades;
+	}
+	//HERE END
 
 	item = FindItem("Rockets");
 	if (item)
@@ -460,6 +481,12 @@ qboolean Add_Ammo (edict_t *ent, gitem_t *item, int count)
 		max = ent->client->pers.max_rockets;
 	else if (item->tag == AMMO_GRENADES)
 		max = ent->client->pers.max_grenades;
+	//HERE BEGIN
+	else if (item->tag == AMMO_CGRENADES)
+		max = ent->client->pers.max_cgrenades;
+	else if (item->tag == AMMO_SGRENADES)
+		max = ent->client->pers.max_sgrenades;
+	//HERE END
 	else if (item->tag == AMMO_CELLS)
 		max = ent->client->pers.max_cells;
 	else if (item->tag == AMMO_SLUGS)
@@ -1423,6 +1450,51 @@ always owned, never in the world
 		AMMO_GRENADES,
 /* precache */ "weapons/hgrent1a.wav weapons/hgrena1b.wav weapons/hgrenc1b.wav weapons/hgrenb1a.wav weapons/hgrenb2a.wav "
 	},
+
+//HERE BEGIN
+	{
+		"ammo_cgrenades",
+		Pickup_Ammo,
+		Use_Weapon,
+		Drop_Ammo,
+		Weapon_ConcussionGrenade,
+		"misc/am_pkup.wav",
+		"models/items/ammo/grenades/medium/tris.md2", 0,
+		"models/weapons/v_handgr/tris.md2",
+		/* icon */		"a_grenades",
+		/* pickup */	"CGrenades",
+		/* width */		3,
+		5,
+		"cgrenades",
+		IT_AMMO | IT_WEAPON,
+		WEAP_CGRENADES,
+		NULL,
+		AMMO_CGRENADES,
+		/* precache */ "weapons/hgrent1a.wav weapons/hgrena1b.wav weapons/hgrenc1b.wav weapons/hgrenb1a.wav weapons/hgrenb2a.wav "
+	},
+
+	{
+		"ammo_sgrenades",
+		Pickup_Ammo,
+		Use_Weapon,
+		Drop_Ammo,
+		Weapon_ShockwaveGrenade,
+		"misc/am_pkup.wav",
+		"models/items/ammo/grenades/medium/tris.md2", 0,
+		"models/weapons/v_handgr/tris.md2",
+		/* icon */		"a_grenades",
+		/* pickup */	"SGrenades",
+		/* width */		3,
+		5,
+		"sgrenades",
+		IT_AMMO | IT_WEAPON,
+		WEAP_SGRENADES,
+		NULL,
+		AMMO_SGRENADES,
+		/* precache */ "weapons/hgrent1a.wav weapons/hgrena1b.wav weapons/hgrenc1b.wav weapons/hgrenb1a.wav weapons/hgrenb2a.wav "
+	},
+
+//HERE END
 
 /*QUAKED weapon_grenadelauncher (.3 .3 1) (-16 -16 -16) (16 16 16)
 */

@@ -31,10 +31,194 @@ void InitTrigger (edict_t *self)
 	self->svflags = SVF_NOCLIENT;
 }
 
+//HERE BEGIN
+//float last_change_time = 0.0;
+
+void change_package(edict_t* ent)
+{
+	ent->package = rand() % 5 + 1;
+	ent->house_num = rand() % 6 + 1;
+	ent->delivered = 1;
+	//ent->package_timer = 5;
+	ent->dmg_multiplier = 1;
+	ent->enemy_dmg_mult = 1;
+	ent->future_coins = 0;
+	ent->future_stars = 0;
+
+	//testing
+	//ent->package = 4;
+
+	if (ent->package == 1) {
+		ent->package_timer = level.time + 15;
+		ent->dmg_multiplier = 0;
+	}
+	else if (ent->package == 2) {
+		ent->package_timer = level.time + 20;
+		ent->dmg_multiplier = 5;
+	}
+	else if (ent->package == 3) {
+		ent->package_timer = level.time + 10;
+		ent->health += 10;
+	}
+	else if (ent->package == 4) {
+		ent->package_timer = level.time + 20;
+		ent->enemy_dmg_mult = 100;
+	}
+	else if (ent->package == 5) {
+		ent->package_timer = level.time + 10;
+		ent->future_coins = 5;
+		ent->future_stars = 1;
+	}
+
+	char pack_str[5];
+	char house[5];
+	//gi.cprintf(ent, PRINT_HIGH, "Deliver Package #%s ", itoa(ent->package, pack_str, 10));
+	gi.centerprintf(ent, "Deliver Package #%s to House #%s", itoa(ent->package, pack_str, 10), itoa(ent->house_num, house, 10));
+	//gi.centerprintf(ent, "to House #%s\n", itoa(ent->house_num, house, 10));
+
+	//gi.centerprintf(ent, "%s\n", "got here");
+	//ent->nextthink = level.time + ent->package_timer;
+	//ent->think = change_package;
+}
+//HERE END
 
 // the wait time has passed, so set back up for another activation
 void multi_wait (edict_t *ent)
 {
+	//HERE BEGIN
+	//if (strcmp(ent->targetname, "trigger_1") == 0) {
+	//	gi.cprintf(ent->activator, PRINT_HIGH, "you activated trigger 1\n");
+	//}
+	char str[5];
+	char star_str[5];
+	if (strcmp(ent->targetname, "trigger_truck") == 0) {
+		if (level.time - ent->timest >= ent->timer) {
+			if (ent->delivered == 0) {
+				//gi.centerprintf(ent->activator, "GOT HERE!");
+				change_package(ent->activator);
+			}
+			else {
+				gi.centerprintf(ent->activator, "You need to deliver the current package before you can get another one!");
+				//ent->delivered -= 1;
+			}
+		}
+	}
+
+	if (strcmp(ent->targetname, "trigger_1") == 0) {
+		if (level.time - ent->timest >= ent->timer) {
+			//gi.cprintf(ent->activator, PRINT_HIGH, "you activated trigger 1\n");
+			ent->timest = level.time;
+			if (ent->activator->house_num == 1) {
+				ent->activator->delivered = 0;
+				ent->activator->coins += 1;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
+			}
+			else if (ent->activator->house_num == 0) {
+				gi.cprintf(ent->activator, PRINT_HIGH, "You don't have a package on you!");
+			}
+			else {
+				ent->activator->stars -= 1;
+				ent->activator->delivered = 0;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
+			}
+		}
+	}
+	if (strcmp(ent->targetname, "trigger_2") == 0) {
+		if (level.time - ent->timest >= ent->timer) {
+			//gi.cprintf(ent->activator, PRINT_HIGH, "you activated trigger 1\n");
+			ent->timest = level.time;
+			if (ent->activator->house_num == 2) {
+				ent->activator->delivered = 0;
+				ent->activator->coins += 1;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
+			}
+			else if (ent->activator->house_num == 0) {
+				gi.cprintf(ent->activator, PRINT_HIGH, "You don't have a package on you!");
+			}
+			else {
+				ent->activator->stars -= 1;
+				ent->activator->delivered = 0;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
+			}
+		}
+	}
+	if (strcmp(ent->targetname, "trigger_3") == 0) {
+		if (level.time - ent->timest >= ent->timer) {
+			//gi.cprintf(ent->activator, PRINT_HIGH, "you activated trigger 1\n");
+			ent->timest = level.time;
+			if (ent->activator->house_num == 3) {
+				ent->activator->delivered = 0;
+				ent->activator->coins += 1;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
+			}
+			else if (ent->activator->house_num == 0) {
+				gi.cprintf(ent->activator, PRINT_HIGH, "You don't have a package on you!");
+			}
+			else {
+				ent->activator->stars -= 1;
+				ent->activator->delivered = 0;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
+			}
+		}
+	}
+	if (strcmp(ent->targetname, "trigger_4") == 0) {
+		if (level.time - ent->timest >= ent->timer) {
+			//gi.cprintf(ent->activator, PRINT_HIGH, "you activated trigger 1\n");
+			ent->timest = level.time;
+			if (ent->activator->house_num == 4) {
+				ent->activator->delivered = 0;
+				ent->activator->coins += 1;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
+			}
+			else if (ent->activator->house_num == 0) {
+				gi.cprintf(ent->activator, PRINT_HIGH, "You don't have a package on you!");
+			}
+			else {
+				ent->activator->stars -= 1;
+				ent->activator->delivered = 0;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
+			}
+		}
+	}
+	if (strcmp(ent->targetname, "trigger_5") == 0) {
+		if (level.time - ent->timest >= ent->timer) {
+			//gi.cprintf(ent->activator, PRINT_HIGH, "you activated trigger 1\n");
+			ent->timest = level.time;
+			if (ent->activator->house_num == 5) {
+				ent->activator->delivered = 0;
+				ent->activator->coins += 1;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
+			}
+			else if (ent->activator->house_num == 0) {
+				gi.cprintf(ent->activator, PRINT_HIGH, "You don't have a package on you!");
+			}
+			else {
+				ent->activator->stars -= 1;
+				ent->activator->delivered = 0;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
+			}
+		}
+	}
+	if (strcmp(ent->targetname, "trigger_6") == 0) {
+		if (level.time - ent->timest >= ent->timer) {
+			//gi.cprintf(ent->activator, PRINT_HIGH, "you activated trigger 1\n");
+			ent->timest = level.time;
+			if (ent->activator->house_num == 6) {
+				ent->activator->delivered = 0;
+				ent->activator->coins += 1;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
+			}
+			else if (ent->activator->house_num == 0) {
+				gi.cprintf(ent->activator, PRINT_HIGH, "You don't have a package on you!");
+			}
+			else {
+				ent->activator->stars -= 1;
+				ent->activator->delivered = 0;
+				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
+			}
+		}
+	}
+	//HERE END
 	ent->nextthink = 0;
 }
 
@@ -44,6 +228,11 @@ void multi_wait (edict_t *ent)
 // so wait for the delay time before firing
 void multi_trigger (edict_t *ent)
 {
+	//HERE BEGIN
+	//if (strcmp(ent->targetname, "trigger_1") == 0) {
+	//	gi.cprintf(ent->activator, PRINT_HIGH, "you activated trigger 1");
+	//}
+	//HERE END
 	if (ent->nextthink)
 		return;		// already been triggered
 
@@ -53,6 +242,11 @@ void multi_trigger (edict_t *ent)
 	{
 		ent->think = multi_wait;
 		ent->nextthink = level.time + ent->wait;
+
+		//HERE BEGIN
+		ent->timest = level.time;
+		ent->timer = ent->wait;
+		//HERE END
 	}
 	else
 	{	// we can't just remove (self) here, because this is a touch function
@@ -92,7 +286,7 @@ void Touch_Multi (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *su
 		if (_DotProduct(forward, self->movedir) < 0)
 			return;
 	}
-
+	
 	self->activator = other;
 	multi_trigger (self);
 }
@@ -130,6 +324,11 @@ void SP_trigger_multiple (edict_t *ent)
 	ent->movetype = MOVETYPE_NONE;
 	ent->svflags |= SVF_NOCLIENT;
 
+	//HERE BEGIN
+	//if (strcmp(ent->targetname, "trigger_1")) {
+	//	gi.cprintf(ent->owner->client, PRINT_HIGH, "you activated trigger 1");
+	//}
+	//HERE END
 
 	if (ent->spawnflags & 4)
 	{

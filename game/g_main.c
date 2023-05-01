@@ -72,6 +72,11 @@ cvar_t	*flood_waitdelay;
 cvar_t	*sv_maplist;
 
 void SpawnEntities (char *mapname, char *entities, char *spawnpoint);
+
+//HERE BEGIN
+void change_package(edict_t* ent);
+//HERE END
+
 void ClientThink (edict_t *ent, usercmd_t *cmd);
 qboolean ClientConnect (edict_t *ent, char *userinfo);
 void ClientUserinfoChanged (edict_t *ent, char *userinfo);
@@ -85,7 +90,6 @@ void WriteLevel (char *filename);
 void ReadLevel (char *filename);
 void InitGame (void);
 void G_RunFrame (void);
-
 
 //===================================================================
 
