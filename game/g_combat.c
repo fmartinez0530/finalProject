@@ -581,7 +581,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 			take = 0;
 		}
 		else if (mod == MOD_BLASTER) {
-			take = 1;
+			take = 5;
 		}
 		else if (mod == MOD_SHOTGUN) {
 			take = 1;
@@ -660,20 +660,43 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		}
 		//if (attacker->package)
 		//targ->dmg_multiplier = 1;
-		if (attacker->client)
+		if (attacker->client) {
 			targ->health = targ->health - (take + attacker->enemy_dmg_mult);
-		else
+		}
+		else {
 			targ->health = targ->health - (take * targ->dmg_multiplier);
+		}
 
 			// attacker is an enemy
 		//targ->health = targ->health - (take * targ->dmg_multiplier);
 		//HERE END
 		
-		if (targ->health <= 0)
+		if (targ->health <= 0 && attacker->client)
 		{
 			if ((targ->svflags & SVF_MONSTER) || (client))
 				targ->flags |= FL_NO_KNOCKBACK;
 			Killed (targ, inflictor, attacker, take, point);
+
+			char kills[5];
+			attacker->enemy_num += 1;
+			gi.cprintf(attacker, PRINT_HIGH, "%s\n", itoa(attacker->enemy_num, kills, 10));
+			G_FreeEdict(targ);
+			/*
+			else {
+				char kills[5];
+				attacker->enemy->enemy_num += 1;
+				gi.cprintf(attacker->enemy, PRINT_HIGH, "%s\n", itoa(attacker->enemy_num, kills, 10));
+				if (!targ->client)
+					G_FreeEdict(targ);
+			}
+			*/
+			if (attacker->enemy_num > 0 && attacker->enemy_num < 12) {
+				attacker->wave_flag = 1;
+			}
+			else if (attacker->enemy_num >= 12) {
+				attacker->wave_flag = 1;
+				attacker->wave_flag2 = 2;
+			}
 			return;
 		}
 	}

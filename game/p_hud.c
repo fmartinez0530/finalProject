@@ -430,7 +430,10 @@ void G_SetStats (edict_t *ent)
 	{
 		item = GetItemByIndex (index);
 		ent->client->ps.stats[STAT_ARMOR_ICON] = gi.imageindex (item->icon);
-		ent->client->ps.stats[STAT_ARMOR] = ent->client->pers.inventory[index];
+		//HERE BEGIN
+		//ent->client->ps.stats[STAT_ARMOR] = ent->client->pers.inventory[index];
+		ent->client->ps.stats[STAT_ARMOR] = ent->coins;
+		//HERE END
 	}
 	else
 	{
@@ -524,6 +527,9 @@ void G_SetStats (edict_t *ent)
 		ent->client->ps.stats[STAT_HELPICON] = 0;
 
 	ent->client->ps.stats[STAT_SPECTATOR] = 0;
+	//HERE BEGIN
+	//ent->client->ps.stats[STAT_COINS] = ent->coins;
+	//HERE END
 }
 
 /*

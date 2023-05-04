@@ -627,8 +627,9 @@ int ArmorIndex (edict_t *ent)
 
 	if (ent->client->pers.inventory[body_armor_index] > 0)
 		return body_armor_index;
-
-	return 0;
+	//HERE BEGIN
+	return body_armor_index; //Changed return 0 to this return
+	//HERE END
 }
 
 qboolean Pickup_Armor (edict_t *ent, edict_t *other)

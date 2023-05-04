@@ -1008,6 +1008,9 @@ typedef enum
 #define	STAT_FLASHES			15		// cleared each frame, 1 = health, 2 = armor
 #define STAT_CHASE				16
 #define STAT_SPECTATOR			17
+//HERE BEGIN
+#define STAT_COINS				18
+//HERE END
 
 #define	MAX_STATS				32
 
@@ -1102,6 +1105,11 @@ ROGUE - VERSIONS
 #define	CS_MAPCHECKSUM		31		// for catching cheater maps
 
 #define	CS_MODELS			32
+
+//HERE BEGIN
+#define CS_COINS			33
+//HERE END
+
 #define	CS_SOUNDS			(CS_MODELS+MAX_MODELS)
 #define	CS_IMAGES			(CS_SOUNDS+MAX_SOUNDS)
 #define	CS_LIGHTS			(CS_IMAGES+MAX_IMAGES)
@@ -1186,6 +1194,10 @@ typedef struct
 	int			rdflags;		// refdef flags
 
 	short		stats[MAX_STATS];		// fast status bar updates
+
+	//HERE BEGIN
+	int			coins;
+	//HERE END
 } player_state_t;
 
 

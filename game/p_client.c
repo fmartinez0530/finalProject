@@ -1423,6 +1423,10 @@ void ClientUserinfoChanged (edict_t *ent, char *userinfo)
 
 	// save off the userinfo in case we want to check something later
 	strncpy (ent->client->pers.userinfo, userinfo, sizeof(ent->client->pers.userinfo)-1);
+	
+	//HERE BEGIN
+	ent->client->ps.coins = ent->coins;
+	//HERE END
 }
 
 
@@ -1639,6 +1643,14 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 	level.current_entity = ent;
 	client = ent->client;
+
+	//G_SetStats(ent);
+	/*
+	ent->client->ps.stats[STAT_COINS] = ent->coins;
+	char waves[16];
+	snprintf(waves, sizeof(waves), "%d", ent->client->ps.stats[STAT_COINS]);
+	gi.configstring(CS_STATUSBAR, waves);
+	*/
 
 	if (level.intermissiontime)
 	{
@@ -1858,6 +1870,9 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		if (other->inuse && other->client->chase_target == ent)
 			UpdateChaseCam(other);
 	}
+
+	//g_entities[clientNum].client->ps.stats[STAT_COINS] = state->coins;
+	//gi.configstring(CS_COINS + clientNum, va("%d", state->coins));
 }
 
 

@@ -111,6 +111,7 @@ void multi_wait (edict_t *ent)
 			if (ent->activator->house_num == 1) {
 				ent->activator->delivered = 0;
 				ent->activator->coins += 1;
+				ent->activator->client->ps.stats[STAT_COINS] = ent->activator->coins;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
 			}
 			else if (ent->activator->house_num == 0) {
@@ -130,6 +131,7 @@ void multi_wait (edict_t *ent)
 			if (ent->activator->house_num == 2) {
 				ent->activator->delivered = 0;
 				ent->activator->coins += 1;
+				ent->activator->client->ps.stats[STAT_COINS] = ent->activator->coins;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
 			}
 			else if (ent->activator->house_num == 0) {
@@ -149,6 +151,7 @@ void multi_wait (edict_t *ent)
 			if (ent->activator->house_num == 3) {
 				ent->activator->delivered = 0;
 				ent->activator->coins += 1;
+				ent->activator->client->ps.stats[STAT_COINS] = ent->activator->coins;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
 			}
 			else if (ent->activator->house_num == 0) {
@@ -168,6 +171,7 @@ void multi_wait (edict_t *ent)
 			if (ent->activator->house_num == 4) {
 				ent->activator->delivered = 0;
 				ent->activator->coins += 1;
+				ent->activator->client->ps.stats[STAT_COINS] = ent->activator->coins;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
 			}
 			else if (ent->activator->house_num == 0) {
@@ -187,6 +191,7 @@ void multi_wait (edict_t *ent)
 			if (ent->activator->house_num == 5) {
 				ent->activator->delivered = 0;
 				ent->activator->coins += 1;
+				ent->activator->client->ps.stats[STAT_COINS] = ent->activator->coins;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
 			}
 			else if (ent->activator->house_num == 0) {

@@ -500,7 +500,7 @@ qboolean FindTarget (edict_t *self)
 		r = range (self, client);
 
 		if (r == RANGE_FAR)
-			return false;
+			return true; //changed from false to true
 
 // this is where we would check invisibility
 

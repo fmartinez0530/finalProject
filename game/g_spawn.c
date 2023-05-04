@@ -738,8 +738,6 @@ char *dm_statusbar =
 "	pic 6 "
 "endif "
 
-"yb	-50 "
-
 // picked up item
 "if 7 "
 "	xv	0 "

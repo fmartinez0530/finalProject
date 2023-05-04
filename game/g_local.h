@@ -1113,6 +1113,9 @@ struct edict_s
 	int			house_num;
 	int			dmg_multiplier;
 	int			enemy_dmg_mult;
+	int			wave_flag;
+	int			wave_flag2;
+	int			enemy_num;
 	edict_t		*poison_attacker;
 	edict_t		*push_attacker;
 	edict_t		*push_inflictor;

@@ -1768,9 +1768,50 @@ so, the basic time between firing is a random time between
 
 These can used but not touched.
 */
+int func_flag = 0;
 void func_timer_think (edict_t *self)
 {
-	G_UseTargets (self, self->activator);
+	/*
+	if (self->activator->activator->package_timer != 0) {
+		float timesince = level.time - last_change;
+		if (timesince >= self->activator->activator->package_timer) {
+			G_UseTargets(self, self->activator);
+			last_change = level.time;
+		}
+		self->nextthink = level.time + self->wait + crandom() * self->random;
+	}
+	*/
+	edict_t* player = NULL;
+	player = G_Find(player, FOFS(classname), "player");
+
+	if (strcmp(self->target, "spawn") == 0) {
+		if (func_flag == 0) {
+			G_UseTargets(self, self->activator);
+			func_flag = 1;
+		}
+		else if ((player->enemy_num % 6 == 0) && (player->wave_flag == 1) && (player->wave_flag2 != 2)) {
+			G_UseTargets(self, self->activator);
+		}
+		else if ((player->enemy_num % 12 == 0) && (player->wave_flag2 == 2)) {
+			G_UseTargets(self, self->activator);
+		}
+		//G_UseTargets(self, self->activator
+		player->wave_flag = 0;
+	}
+
+	if (strcmp(self->target, "spawn2") == 0) {
+		if (func_flag == 0) {
+			G_UseTargets(self, self->activator);
+			func_flag = 1;
+		}
+		else if ((player->enemy_num % 12 == 0) && (player->wave_flag2 == 2)) {
+			G_UseTargets(self, self->activator);
+		}
+		//G_UseTargets(self, self->activator);
+		//self->nextthink = level.time + self->wait + crandom() * self->random;
+		player->wave_flag2 = 0;
+	}
+	
 	self->nextthink = level.time + self->wait + crandom() * self->random;
 }
 

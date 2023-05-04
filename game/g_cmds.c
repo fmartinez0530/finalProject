@@ -242,6 +242,14 @@ void Cmd_Give_f (edict_t *ent)
 		if (!give_all)
 			return;
 	}
+	//HERE BEGIN
+	if (Q_stricmp(name, "coins") == 0) {
+		ent->coins += 20;
+		char coins[5];
+		gi.cprintf(ent, PRINT_HIGH, "You know have %s coins\n", itoa(ent->coins, coins, 10));
+		return;
+	}
+	//HERE END
 
 	if (give_all)
 	{
