@@ -1,11 +1,18 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(503,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  g_spawn.c
-C:\Users\Ale\git\finalProject\game\g_spawn.c(384,5): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Ale\git\finalProject\game\g_spawn.c(437,3): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Ale\git\finalProject\game\g_spawn.c(547,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Ale\git\finalProject\game\g_spawn.c(548,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Ale\git\finalProject\game\g_spawn.c(845,3): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Ale\git\finalProject\game\g_spawn.c(852,3): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Ale\git\finalProject\game\g_spawn.c(855,3): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  p_client.c
+C:\Users\alito\git\finalProject\game\p_client.c(71,42): warning C4100: 'self': unreferenced formal parameter
+C:\Users\alito\git\finalProject\game\p_client.c(180,66): warning C4100: 'damage': unreferenced formal parameter
+C:\Users\alito\git\finalProject\game\p_client.c(180,56): warning C4100: 'kick': unreferenced formal parameter
+C:\Users\alito\git\finalProject\game\p_client.c(180,43): warning C4100: 'other': unreferenced formal parameter
+C:\Users\alito\git\finalProject\game\p_client.c(180,28): warning C4100: 'self': unreferenced formal parameter
+C:\Users\alito\git\finalProject\game\p_client.c(212,46): warning C4100: 'inflictor': unreferenced formal parameter
+C:\Users\alito\git\finalProject\game\p_client.c(502,91): warning C4100: 'point': unreferenced formal parameter
+C:\Users\alito\git\finalProject\game\p_client.c(932,89): warning C4100: 'point': unreferenced formal parameter
+C:\Users\alito\git\finalProject\game\p_client.c(932,60): warning C4100: 'attacker': unreferenced formal parameter
+C:\Users\alito\git\finalProject\game\p_client.c(932,40): warning C4100: 'inflictor': unreferenced formal parameter
+C:\Users\alito\git\finalProject\game\p_client.c(1380,3): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\alito\git\finalProject\game\p_client.c(1385,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\alito\git\finalProject\game\p_client.c(1425,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\alito\git\finalProject\game\p_client.c(1676,101): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
      Creating library .\..\release\gamex86.lib and object .\..\release\gamex86.exp
-  game.vcxproj -> C:\Users\Ale\git\finalProject\game\release\gamex86.dll
+  game.vcxproj -> C:\Users\alito\git\finalProject\game\release\gamex86.dll

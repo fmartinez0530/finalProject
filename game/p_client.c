@@ -1672,7 +1672,8 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 				ent->package_timer = 0;
 				ent->delivered = 0;
 				ent->house_num = 0;
-				gi.cprintf(ent, PRINT_HIGH, "Got here not delivered!");
+				char stars[5];
+				gi.cprintf(ent, PRINT_HIGH, "Not delivered in time, you have lost a star! (Now at %s stars)\n", itoa(ent->stars, stars, 10));
 			}
 			else {
 				ent->package_timer = 0;
