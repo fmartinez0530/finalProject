@@ -8,11 +8,12 @@ have has access to a shop where they can buy new items to deal with the enemies,
 Keep in mind, you start with 5 stars (you deliver for a restaurant). Wrong deliveries will cause you to lose a star. Zero stars and you instantly lose the game. 
 
 
-USING THE MOD SHORTCUT:
+USING THE MOD SHORTCUT & LOADING UP THE MOD:
 ****************************************************************************************************************************************************************
 The Quake 2 shortcut exe is included in the cooking simulator 2 mod folder. Use it to instantly open the mod and run a new game. Otherways, you can open console
 using the "~" key, and typing "game cooking_simulator_2".
-
+To play on the custom map, open up the console and type "map custom". From there, you can begin playing the game by getting your first order by the back of the
+food truck and stepping towards the "houses". Once you step away from the food truck, the waves of enemies will spawn.
 
 PACKAGE/ORDERS INFO:
 ****************************************************************************************************************************************************************
