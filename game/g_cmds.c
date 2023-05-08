@@ -292,7 +292,7 @@ void Cmd_Give_f (edict_t *ent)
 		}
 		else {
 			//HERE BEGIN
-			if (it->flags & WEAP_GRENADES && ent->coins >= 1) {
+			if (Q_stricmp(name, "grenades") == 0) {
 				if (ent->coins >= 1) {
 					gi.cprintf(ent, PRINT_HIGH, "+5 Poison Grenades\n");
 					ent->coins -= 1;
@@ -302,7 +302,7 @@ void Cmd_Give_f (edict_t *ent)
 					gi.cprintf(ent, PRINT_HIGH, "Need more coins!\n");
 				}
 			}
-			else if (it->flags & WEAP_SGRENADES && ent->coins >= 1) {
+			else if (Q_stricmp(name, "sgrenades") == 0) {
 				if (ent->coins >= 1) {
 					gi.cprintf(ent, PRINT_HIGH, "+5 Shockwave Grenades\n");
 					ent->coins -= 1;
@@ -312,7 +312,8 @@ void Cmd_Give_f (edict_t *ent)
 					gi.cprintf(ent, PRINT_HIGH, "Need more coins!\n");
 				}
 			}
-			else if (it->flags & WEAP_CGRENADES && ent->coins >= 1) {
+			//it->flags & WEAP_CGRENADES && ent->coins >= 1
+			else if (Q_stricmp(name, "cgrenades") == 0) {
 				if (ent->coins >= 1) {
 					gi.cprintf(ent, PRINT_HIGH, "+5 Chaos Grenades\n");
 					ent->coins -= 1;
@@ -332,7 +333,7 @@ void Cmd_Give_f (edict_t *ent)
 	{
 		//HERE BEGIN
 		//Added the if-statement. The else statement was already here, just added the lines inside of it to the if-else statement thing
-		if (it->flags & WEAP_RAILGUN)
+		if (Q_stricmp(name, "railgun") == 0)
 		{
 			if (ent->coins >= 1) {
 				gi.cprintf(ent, PRINT_HIGH, "Railgun Bought!\n");
@@ -350,7 +351,7 @@ void Cmd_Give_f (edict_t *ent)
 			}
 			// output the console message
 		}
-		else if (it->flags & WEAP_BFG) {
+		else if (Q_stricmp(name, "bfg10k") == 0) {
 			if (ent->coins >= 1) {
 				gi.cprintf(ent, PRINT_HIGH, "BFG Bought!\n");
 				ent->coins -= 1;
