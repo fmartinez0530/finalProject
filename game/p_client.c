@@ -1335,6 +1335,9 @@ void ClientBegin (edict_t *ent)
 	//ent->nextthink = level.time + ent->package_timer;
 	ent->stars = 5;
 	ent->package_timer = 0;
+	level.stars = 5;
+	level.curr_stars = 5;
+	level.coins = 0;
 	//HERE END
 
 	if (level.intermissiontime)
@@ -1669,11 +1672,15 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			//gi.cprintf(ent, PRINT_HIGH, "Got here!");
 			if (ent->delivered == 1) {
 				ent->stars -= 1;
+				if (level.curr_stars != 0) {
+					level.curr_stars -= 1;
+					char stars[5];
+					gi.cprintf(ent, PRINT_HIGH, "Not delivered in time, you have lost a star! (Now at %s stars)\n", itoa(ent->stars, stars, 10));
+				}
 				ent->package_timer = 0;
 				ent->delivered = 0;
 				ent->house_num = 0;
-				char stars[5];
-				gi.cprintf(ent, PRINT_HIGH, "Not delivered in time, you have lost a star! (Now at %s stars)\n", itoa(ent->stars, stars, 10));
+				
 			}
 			else {
 				ent->package_timer = 0;

@@ -38,6 +38,7 @@ void change_package(edict_t* ent)
 {
 	ent->package = rand() % 5 + 1;
 	ent->house_num = rand() % 6 + 1;
+	level.house = ent->house_num;
 	ent->delivered = 1;
 	//ent->package_timer = 5;
 	ent->dmg_multiplier = 1;
@@ -111,6 +112,7 @@ void multi_wait (edict_t *ent)
 			if (ent->activator->house_num == 1) {
 				ent->activator->delivered = 0;
 				ent->activator->coins += 1;
+				level.coins += 1;
 				ent->activator->client->ps.stats[STAT_COINS] = ent->activator->coins;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
 			}
@@ -119,6 +121,9 @@ void multi_wait (edict_t *ent)
 			}
 			else {
 				ent->activator->stars -= 1;
+				if (level.curr_stars != 0) {
+					level.curr_stars -= 1;
+				}
 				ent->activator->delivered = 0;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
 			}
@@ -131,6 +136,7 @@ void multi_wait (edict_t *ent)
 			if (ent->activator->house_num == 2) {
 				ent->activator->delivered = 0;
 				ent->activator->coins += 1;
+				level.coins += 1;
 				ent->activator->client->ps.stats[STAT_COINS] = ent->activator->coins;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
 			}
@@ -139,6 +145,9 @@ void multi_wait (edict_t *ent)
 			}
 			else {
 				ent->activator->stars -= 1;
+				if (level.curr_stars != 0) {
+					level.curr_stars -= 1;
+				}
 				ent->activator->delivered = 0;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
 			}
@@ -151,6 +160,7 @@ void multi_wait (edict_t *ent)
 			if (ent->activator->house_num == 3) {
 				ent->activator->delivered = 0;
 				ent->activator->coins += 1;
+				level.coins += 1;
 				ent->activator->client->ps.stats[STAT_COINS] = ent->activator->coins;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
 			}
@@ -159,6 +169,9 @@ void multi_wait (edict_t *ent)
 			}
 			else {
 				ent->activator->stars -= 1;
+				if (level.curr_stars != 0) {
+					level.curr_stars -= 1;
+				}
 				ent->activator->delivered = 0;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
 			}
@@ -171,6 +184,7 @@ void multi_wait (edict_t *ent)
 			if (ent->activator->house_num == 4) {
 				ent->activator->delivered = 0;
 				ent->activator->coins += 1;
+				level.coins += 1;
 				ent->activator->client->ps.stats[STAT_COINS] = ent->activator->coins;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
 			}
@@ -179,6 +193,9 @@ void multi_wait (edict_t *ent)
 			}
 			else {
 				ent->activator->stars -= 1;
+				if (level.curr_stars != 0) {
+					level.curr_stars -= 1;
+				}
 				ent->activator->delivered = 0;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
 			}
@@ -191,6 +208,7 @@ void multi_wait (edict_t *ent)
 			if (ent->activator->house_num == 5) {
 				ent->activator->delivered = 0;
 				ent->activator->coins += 1;
+				level.coins += 1;
 				ent->activator->client->ps.stats[STAT_COINS] = ent->activator->coins;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
 			}
@@ -199,6 +217,9 @@ void multi_wait (edict_t *ent)
 			}
 			else {
 				ent->activator->stars -= 1;
+				if (level.curr_stars != 0) {
+					level.curr_stars -= 1;
+				}
 				ent->activator->delivered = 0;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
 			}
@@ -211,6 +232,7 @@ void multi_wait (edict_t *ent)
 			if (ent->activator->house_num == 6) {
 				ent->activator->delivered = 0;
 				ent->activator->coins += 1;
+				level.coins += 1;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Successful Delivery! You now have %s coins\n", itoa(ent->activator->coins, str, 10));
 			}
 			else if (ent->activator->house_num == 0) {
@@ -218,6 +240,9 @@ void multi_wait (edict_t *ent)
 			}
 			else {
 				ent->activator->stars -= 1;
+				if (level.curr_stars != 0) {
+					level.curr_stars -= 1;
+				}
 				ent->activator->delivered = 0;
 				gi.cprintf(ent->activator, PRINT_HIGH, "Wrong Delivery! You have lost a star! (Now at %s stars)\n", itoa(ent->activator->stars, star_str, 10));
 			}

@@ -341,6 +341,12 @@ typedef struct
 
 	int			total_monsters;
 	int			killed_monsters;
+	//HERE BEGIN
+	int			stars;
+	int			curr_stars;
+	int			coins;
+	int			house;
+	//HERE END
 
 	edict_t		*current_entity;	// entity running from G_RunFrame
 	int			body_que;			// dead bodies

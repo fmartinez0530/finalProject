@@ -322,15 +322,15 @@ void HelpComputer (edict_t *ent)
 		"xv 0 yv 102 cstring2 \"%s\" "		// help 2
 		//"xv 50 yv 164 string2 \" kills     goals    secrets\" "
 		"xv 0 yv 161 cstring2 \"%s\" "
-		"xv 0 yv 253 string2 \"%3i/%3i          %i/%i          %i/%i\" ", 
+		"xv 0 yv 253 string2 \"%3i/%3i          %i              %i\" ", 
 		//sk,
 		//level.level_name,
 		"Deliver the packages within the given\ntime frame. Keep track of your\nStars (hp), Coins, and the current\nNPC to deliver to.",
-		"Watch out for the enemies!\nDon't forget to buy items!",
-		"give item1",
-		level.killed_monsters, level.total_monsters, 
-		level.found_goals, level.total_goals,
-		level.found_secrets, level.total_secrets);
+		"Watch out for the enemies!\nDon't forget to buy items!\n (Each cost 1 coin)",
+		"give coins (+20 coins)\ngive bfg10k\ngive railgun\ngive grenades\ngive sgrenades\ngive cgrenades",
+		level.curr_stars, level.stars, 
+		level.coins, //level.total_goals, 
+		level.house);//level.total_secrets);
 
 	gi.WriteByte (svc_layout);
 	gi.WriteString (string);

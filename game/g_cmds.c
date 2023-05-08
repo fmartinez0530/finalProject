@@ -245,6 +245,7 @@ void Cmd_Give_f (edict_t *ent)
 	//HERE BEGIN
 	if (Q_stricmp(name, "coins") == 0) {
 		ent->coins += 20;
+		level.coins += 20;
 		char coins[5];
 		gi.cprintf(ent, PRINT_HIGH, "You know have %s coins\n", itoa(ent->coins, coins, 10));
 		return;
@@ -293,9 +294,10 @@ void Cmd_Give_f (edict_t *ent)
 		else {
 			//HERE BEGIN
 			if (Q_stricmp(name, "grenades") == 0) {
-				if (ent->coins >= 1) {
+				if (ent->coins >= 1 && level.coins >= 1) {
 					gi.cprintf(ent, PRINT_HIGH, "+5 Poison Grenades\n");
 					ent->coins -= 1;
+					level.coins -= 1;
 					ent->client->pers.inventory[index] += it->quantity;
 				}
 				else {
@@ -303,9 +305,10 @@ void Cmd_Give_f (edict_t *ent)
 				}
 			}
 			else if (Q_stricmp(name, "sgrenades") == 0) {
-				if (ent->coins >= 1) {
+				if (ent->coins >= 1 && level.coins >= 1) {
 					gi.cprintf(ent, PRINT_HIGH, "+5 Shockwave Grenades\n");
 					ent->coins -= 1;
+					level.coins -= 1;
 					ent->client->pers.inventory[index] += it->quantity;
 				}
 				else {
@@ -314,9 +317,10 @@ void Cmd_Give_f (edict_t *ent)
 			}
 			//it->flags & WEAP_CGRENADES && ent->coins >= 1
 			else if (Q_stricmp(name, "cgrenades") == 0) {
-				if (ent->coins >= 1) {
+				if (ent->coins >= 1 && level.coins >= 1) {
 					gi.cprintf(ent, PRINT_HIGH, "+5 Chaos Grenades\n");
 					ent->coins -= 1;
+					level.coins -= 1;
 					ent->client->pers.inventory[index] += it->quantity;
 				}
 				else {
@@ -335,9 +339,10 @@ void Cmd_Give_f (edict_t *ent)
 		//Added the if-statement. The else statement was already here, just added the lines inside of it to the if-else statement thing
 		if (Q_stricmp(name, "railgun") == 0)
 		{
-			if (ent->coins >= 1) {
+			if (ent->coins >= 1 && level.coins >= 1) {
 				gi.cprintf(ent, PRINT_HIGH, "Railgun Bought!\n");
 				ent->coins -= 1;
+				level.coins -= 1;
 				//Added the below to make gun spawn if enough coins
 				it_ent = G_Spawn();
 				it_ent->classname = it->classname;
@@ -352,9 +357,10 @@ void Cmd_Give_f (edict_t *ent)
 			// output the console message
 		}
 		else if (Q_stricmp(name, "bfg10k") == 0) {
-			if (ent->coins >= 1) {
+			if (ent->coins >= 1 && level.coins >= 1) {
 				gi.cprintf(ent, PRINT_HIGH, "BFG Bought!\n");
 				ent->coins -= 1;
+				level.coins -= 1;
 				//Added the below to make gun spawn if enough coins
 				it_ent = G_Spawn();
 				it_ent->classname = it->classname;
